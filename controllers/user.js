@@ -5,7 +5,7 @@ async function handleUserSignup(req, res){
         name,
         email,
         password,
-    })
+    });
     return res.render("home");
 }
 module.exports = {
