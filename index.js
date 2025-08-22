@@ -6,7 +6,7 @@ const staticRoute = require("./routes/staticrouter");
 const userRoute = require("./routes/user");
 const { ConnectToMongoDB} = require("./connect");
 const URL = require("./models/url");
-const { restrictToLoggedinUserOnly } = require("./middlewares/auth");
+const { restrictToLoggedinUserOnly, checkAuth } = require("./middlewares/auth");
 const app = express();
 const port = 8001;
 ConnectToMongoDB('mongodb://localhost:27017/short-url')
@@ -25,7 +25,7 @@ app.use(cookieParser());
 
 app.use("/url",restrictToLoggedinUserOnly, urlRoute);
 app.use("/user", userRoute);
-app.use("/", staticRoute);
+app.use("/", checkAuth, staticRoute);
 app.get("/url/:shortId", async (req, res) => {
     const shortId = req.params.shortId;
     const entry  = await URL.findOneAndUpdate(
