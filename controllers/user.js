@@ -19,9 +19,9 @@ async function handleUserLogin(req, res){
     if(!user) return res.render("login", {
         error: "invalid username or password",
     })
-    const sessionId = uuidv4(); // if login in correct i will create session id
-    setUser(sessionId, user);
-    res.cookie("uid", sessionId);
+    
+    const token = setUser(user);
+    res.cookie("uid", token);
     return res.redirect("/");
 }
 module.exports = {
